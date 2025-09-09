@@ -76,7 +76,7 @@ def first_sequence(sequence):
 import os
 
 # 指定使用 GPU 4
-os.environ['CUDA_VISIBLE_DEVICES'] = '6'  # 只让 PyTorch 看见 GPU 4
+os.environ['CUDA_VISIBLE_DEVICES'] = '6'
 
 if torch.cuda.is_available():
     device = torch.device('cuda')
@@ -85,40 +85,16 @@ else:
     device = torch.device('cpu')
     print('The code uses CPU!!!')
 
-# #
-# prot_tokenizer = AutoTokenizer.from_pretrained("./models/prot_bert_bfd", do_lower_case=False)  #  Rostlab
-# prot_model = AutoModel.from_pretrained("./models/prot_bert_bfd").to(device)
 
-
-# 替换为 esm2_t36_3B_UR50D
 prot_tokenizer = AutoTokenizer.from_pretrained("/stu-3031/MMDG-Revise/models/esm2_t36_3B_UR50D", do_lower_case=False)
 prot_model = AutoModel.from_pretrained("/stu-3031/MMDG-Revise/models/esm2_t36_3B_UR50D").to(device)
-# import esm
-#
-# # 加载模型
-# prot_model, alphabet = esm.pretrained.esm2_t36_3B_UR50D()
-# prot_model = prot_model.to(device)
-# batch_converter = alphabet.get_batch_converter()
-
-# # 在文件顶部添加导入
-# from transformers import EsmTokenizer, EsmModel
-#
-# # 替换原模型加载代码
-# prot_tokenizer = EsmTokenizer.from_pretrained("./models/esm2_t36_3B_UR50D")
-# prot_model = EsmModel.from_pretrained("./models/esm2_t36_3B_UR50D").to(device)
-
-
-# chem_tokenizer = AutoTokenizer.from_pretrained("./models/PubChem10M_SMILES_BPE_450k", do_lower_case=False)   #  seyonec
-# chem_model = AutoModel.from_pretrained("./models/PubChem10M_SMILES_BPE_450k").to(device)
-
-# 修改后的代码
 chem_tokenizer = AutoTokenizer.from_pretrained(
     "/stu-3031/Model/MoLFormer-XL-both-10pct",
-    trust_remote_code=True  # 添加这个关键参数
+    trust_remote_code=True
 )
 chem_model = AutoModel.from_pretrained(
     "/stu-3031/Model/MoLFormer-XL-both-10pct",
-    trust_remote_code=True  # 添加这个关键参数
+    trust_remote_code=True
 ).to(device)
 
 
@@ -451,25 +427,6 @@ def DTI_datasets3(dataset, dir_input):  # BindingDB, Human, C.elegan, GPCRs
             sequences = sequences[0:5000]
         sequencess.append(sequences)
         smiless.append(smiles)
-        # print(len(sequences))
-        # protein_input = prot_tokenizer.batch_encode_plus([" ".join(sequences)], add_special_tokens=True, padding=True)#"longest", max_length=1200, truncation=True, return_tensors='pt')
-        # p_IDS = torch.tensor(protein_input["input_ids"]).to(device)
-        # p_a_m = torch.tensor(protein_input["attention_mask"]).to(device)
-        # # sequences = torch.tensor(sequences).to(self.device)
-        # with torch.no_grad():
-        #     prot_outputs = prot_model(input_ids=p_IDS, attention_mask=p_a_m)
-        # prot_feature = prot_outputs.last_hidden_state.squeeze(0).to('cpu').data.numpy()
-        # if sequences not in p_LM:
-        #     p_LM[sequences] = prot_feature
-
-        # chem_input = chem_tokenizer.batch_encode_plus([smiles], add_special_tokens=True, padding=True)
-        # c_IDS = torch.tensor(chem_input["input_ids"]).to(device)
-        # c_a_m = torch.tensor(chem_input["attention_mask"]).to(device)
-        # with torch.no_grad():
-        #     chem_outputs = chem_model(input_ids=c_IDS, attention_mask=c_a_m)
-        # chem_feature = chem_outputs.last_hidden_state.squeeze(0).to('cpu').data.numpy()  # .mean(dim=1)
-        # if smiles not in d_LM:
-        #     d_LM[smiles] = chem_feature
 
         molecule_word = []
         for i in range(len(smiles)):
@@ -485,12 +442,6 @@ def DTI_datasets3(dataset, dir_input):  # BindingDB, Human, C.elegan, GPCRs
         proteins.append(protein_first)
 
         interactions.append(np.array([float(interaction)]))
-
-    # with open(dir_input + "p_LM.pkl", "wb") as p:
-    #     pickle.dump(p_LM, p)
-    #
-    # with open(dir_input + "d_LM.pkl", "wb") as d:
-    #     pickle.dump(d_LM, d)
 
     molecule_words = np.asarray(molecule_words, dtype=object)
     molecule_atoms = np.asarray(molecule_atoms, dtype=object)
@@ -510,18 +461,8 @@ def DTI_datasets3(dataset, dir_input):  # BindingDB, Human, C.elegan, GPCRs
 
 if __name__ == "__main__":
 
-    # DTI_datasets3("BindingDB_cold/unseen_pair_setting/Unseen pair/train.txt", 'BindingDB_cold/unseen_pair_setting/train/')
-    # DTI_datasets3("BindingDB_cold/unseen_pair_setting/Unseen pair/test.txt", 'BindingDB_cold/unseen_pair_setting/test/')
-    # DTI_datasets3("BindingDB_cold/unseen_pair_setting/Unseen pair/dev.txt", 'BindingDB_cold/unseen_pair_setting/validate/')
-    # DTI_datasets3("/stu-3031/MMDG_Data/BindingDB_cold/unseen_pair_setting/Unseen pair/train.txt",
-    #               '/stu-3031/MMDG_Data/BindingDB_cold/unseen_pair_setting/train/')
-    # DTI_datasets3("/stu-3031/MMDG_Data/BindingDB_cold/unseen_pair_setting/Unseen pair/test.txt", '/stu-3031/MMDG_Data/BindingDB_cold/unseen_pair_setting/test/')
-    # DTI_datasets3("/stu-3031/MMDG_Data/BindingDB_cold/unseen_pair_setting/Unseen pair/dev.txt",
-    #               '/stu-3031/MMDG_Data/BindingDB_cold/unseen_pair_setting/validate/')
 
-    # #
-    # DTI_datasets("GPCRs/original/GPCR_train.txt", 'GPCRs/train/')
-    # DTI_datasets("GPCRs/original/GPCR_test.txt", 'GPCRs/test/')
+
     DTI_datasets("/stu-3031/MMDG_Data/datasets/datasets/BindingDB/original/train.txt", '/stu-3031/MMDG_Data/datasets/datasets_revise/BindingDB/train/')
     DTI_datasets("/stu-3031/MMDG_Data/datasets/datasets/BindingDB/original/test.txt", '/stu-3031/MMDG_Data/datasets/datasets_revise/BindingDB/test/')
 

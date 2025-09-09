@@ -3,7 +3,7 @@ import torch.nn as nn
 from torch.nn import Parameter
 import torch.nn.functional as F
 import numpy as np
-from .Informer_block import AttentionLayer, ProbAttention
+from .Informer import AttentionLayer, ProbAttention
 
 
 class EncoderLayer(nn.Module):

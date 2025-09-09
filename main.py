@@ -3,7 +3,7 @@ import numpy as np
 import torch
 import torch.optim as optim
 from sklearn.metrics import roc_auc_score, precision_score, recall_score,precision_recall_curve, auc
-from data_merge import data_load
+from data_loader import data_load
 from model.model import DGMM_DTI
 
 
@@ -65,12 +65,10 @@ def pack(molecule_words, molecule_atoms, molecule_adjs, proteins, sequences, smi
 
     for smile in smiles:
         molecule_LMs.append(d_LMs[smile])
-        # if d_LMs[smile].shape[0] > d_l:
-        #     d_l = d_LMs[smile].shape[0]
 
     protein_LM = torch.zeros((N, p_l, 2560), device=device)
     molecule_LM = torch.zeros((N, d_l, 768), device=device)
-    # print(d_l)
+
     for i in range(N):
         C_L = molecule_LMs[i].shape[0]
         if C_L >= 100:
@@ -105,9 +103,7 @@ class Trainer(object):
     def __init__(self, model, batch_size, lr, weight_decay):
         self.model = model
         self.optimizer = optim.AdamW(self.model.parameters(), lr=lr, weight_decay=weight_decay)
-        # self.schedule = optim.lr_scheduler.CosineAnnealingLR(self.optimizer, T_max=150, eta_min=0)
         self.batch_size = batch_size
-        # self.optimizer = Ranger(self.model.parameters(), lr=lr, weight_decay=weight_decay)
 
     def train(self, dataset, p_LMs, d_LMs, epoch):
         np.random.shuffle(dataset)
@@ -115,7 +111,6 @@ class Trainer(object):
 
         loss_total = 0
         i = 0
-        # self.optimizer = torch.nn.DataParallel(self.optimizer, device_ids=[0, 1])
         self.optimizer.zero_grad()
 
         molecule_words, molecule_atoms, molecule_adjs, proteins, sequences, smiles, labels, sources = [], [], [], [], [], [], [], []

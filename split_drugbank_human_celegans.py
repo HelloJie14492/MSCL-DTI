@@ -82,5 +82,4 @@ def split(dir_input, input_file):
 # split("/stu-3031/MMDG_Data/datasets/datasets/DrugBank/data_split/", "/stu-3031/MMDG_Data/datasets/datasets/DrugBank")
 # split("/stu-3031/MMDG_Data/datasets/datasets/Human/data_split/", "/stu-3031/MMDG_Data/datasets/datasets/Human")
 split("/stu-3031/MMDG_Data/datasets/datasets/C.elegans/data_split/", "/stu-3031/MMDG_Data/datasets/datasets/C.elegans")
-# split("Davis/data_split/", "Davis")
-# split("Kiba/data_split/", "Kiba")
+

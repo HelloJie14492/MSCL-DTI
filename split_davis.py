@@ -56,21 +56,6 @@ for j in range(len(test_list)):
     smiles_test.append(smiles[test_list[j]])
 
 print(a, b)
-# np.save("Davis/train/" + 'molecule_words', molecule_words_train)
-# np.save("Davis/train/" + 'molecule_atoms', molecule_atoms_train)
-# np.save("Davis/train/" + 'molecule_adjs', molecule_adjs_train)
-# np.save("Davis/train/" + 'proteins', proteins_train)
-# np.save("Davis/train/" + 'interactions', affinity_train)
-# np.save("Davis/train/" + 'sequences', sequences_train)
-# np.save("Davis/train/" + 'smiles', smiles_train)
-#
-# np.save("Davis/test/" + 'molecule_words', molecule_words_test)
-# np.save("Davis/test/" + 'molecule_atoms', molecule_atoms_test)
-# np.save("Davis/test/" + 'molecule_adjs', molecule_adjs_test)
-# np.save("Davis/test/" + 'proteins', proteins_test)
-# np.save("Davis/test/" + 'interactions', affinity_test)
-# np.save("Davis/test/" + 'sequences', sequences_test)
-# np.save("Davis/test/" + 'smiles', smiles_test)
 
 molecule_words_train = np.asarray(molecule_words_train, dtype=object)
 molecule_atoms_train = np.asarray(molecule_atoms_train, dtype=object)
