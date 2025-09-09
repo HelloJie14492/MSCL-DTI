@@ -229,18 +229,17 @@ def setup_seed(seed):
 if __name__ == "__main__":
     import os
     os.environ["CUDA_VISIBLE_DEVICES"] = "3"
-    data_select = "B_to_B"
+    data_select = "D_to_D"
     iteration = 120
     decay_interval = 5
-    batch_size = 64
+    batch_size = 16
     lr = 5e-4
     weight_decay = 0.07
     lr_decay = 0.5
     layer_gnn = 3
     source_number = 3
     drop = 0.05
-    # drop = 0.1
-    setting = "B_to_B_SCL_ESM_XOL_noDAT_batch64"
+    setting = "D_to_D_SCL_ESM_XOL_batch16"
     """CPU or GPU."""
     if torch.cuda.is_available():
         device = torch.device('cuda')
@@ -252,14 +251,12 @@ if __name__ == "__main__":
     dataset_train, dataset_test, p_LMs, d_LMs = data_load(data_select, device)
     setup_seed(2023)
     model = DGMM_DTI(layer_gnn=layer_gnn, source_number=source_number, device=device, dropout=drop).to(device)
-    # model = torch.nn.DataParallel(model, device_ids=[1], output_device=1)
-    # model = model.module.to(torch.device('cpu'))
     trainer = Trainer(model, batch_size, lr, weight_decay)
     tester = Tester(model, batch_size)
 
     """Output files."""
-    file_AUCs = '/stu-3031/MMDG_Data/output/result/AUCs--' + setting + '.txt'
-    file_model = '/stu-3031/MMDG_Data/output/model/' + setting
+    file_AUCs = '/MSCL-DTI/output/result/AUCs--' + setting + '.txt'
+    file_model = '/MSCL-DTI/output/model/' + setting
     AUCs = ('Epoch\tTime(sec)\tLoss_train\t'
             'AUC_test\tPrecision_test\tAUPR_test\tRecall_test\tAUC_LM\tAUC_Sty')
     with open(file_AUCs, 'w') as f:
