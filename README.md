@@ -6,7 +6,7 @@ The code has been tested under the following environment:
 | Python            | 3.12.4    |
 | PyTorch           | 2.7.0     |
 | CUDA              | 12.6      |
-| transformers      | 4.30.0    |
+| Transformers      | 4.30.0    |
 
 
 ## 🚀 Quick Start
